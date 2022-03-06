@@ -9,7 +9,7 @@ import {
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Auditable } from './Auditable';
 
-@Entity('users')
+@Entity('user')
 export class User extends Auditable {
   @PrimaryGeneratedColumn('uuid')
   @IsOptional()
