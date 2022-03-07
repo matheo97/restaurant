@@ -1,4 +1,5 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
+import { companySeed, userSeed } from '../seed/companyUser.seed';
 
 export class CompanyAndUser1646340513321 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<any> {
@@ -12,6 +13,12 @@ export class CompanyAndUser1646340513321 implements MigrationInterface {
             isPrimary: true,
             isGenerated: true,
             generationStrategy: 'uuid',
+          },
+          {
+            name: 'nit',
+            type: 'varchar',
+            length: '255',
+            isNullable: true,
           },
           {
             name: 'name',
@@ -117,6 +124,9 @@ export class CompanyAndUser1646340513321 implements MigrationInterface {
       }),
       true
     );
+
+    await queryRunner.manager.getRepository('company').save(companySeed);
+    await queryRunner.manager.getRepository('user').save(userSeed);
   }
 
   public async down(queryRunner: QueryRunner): Promise<any> {
