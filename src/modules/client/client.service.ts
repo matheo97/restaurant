@@ -1,10 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { User } from '../../../entities/user.entity';
-import { ClientsDAO } from './clients.dao';
+import { User } from '../../../entities/User.entity';
+import { ClientDAO } from './client.dao';
 
 @Injectable()
-export class ClientsService {
-  constructor(private readonly clientsDao: ClientsDAO) {}
+export class ClientService {
+  constructor(private readonly clientsDao: ClientDAO) {}
 
   async getUserById(id: string): Promise<User> {
     const user = await this.clientsDao.getUserById(id);
