@@ -1,19 +1,27 @@
 import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from '../../../entities/User.entity';
+import { Client } from '../../../entities/Client.entity';
 
 @Injectable()
 export class ClientDAO {
   constructor(
-    @InjectRepository(User)
-    private readonly repository: Repository<User>
+    @InjectRepository(Client)
+    private readonly repository: Repository<Client>
   ) {}
 
-  async getUserById(id: string): Promise<User> {
+  async getUserInfoById(clientId: string): Promise<Client> {
     return this.repository
-      .createQueryBuilder('user')
-      .where('user.id = :id', { id })
+      .createQueryBuilder('client')
+      .leftJoinAndSelect('client.company', 'company')
+      .where('client.id = :clientId', { clientId })
+      .getOne();
+  }
+
+  async getClientByEmail(email: string): Promise<Client> {
+    return this.repository
+      .createQueryBuilder('client')
+      .where('client.email = :email', { email })
       .getOne();
   }
 }

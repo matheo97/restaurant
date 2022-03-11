@@ -1,4 +1,10 @@
-import { Controller, Get, Param, ParseUUIDPipe } from '@nestjs/common';
+import { 
+  Controller, 
+  Get, 
+  Param, 
+  ParseUUIDPipe, 
+  UseGuards
+} from '@nestjs/common';
 import {
   ApiBadRequestResponse,
   ApiBearerAuth,
@@ -7,21 +13,25 @@ import {
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
-import { User } from '../../../entities/User.entity';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { Client } from '../../../entities/Client.entity';
 import { ClientService } from './client.service';
 
-@Controller('v1/clients')
+@Controller('/clients')
 @ApiTags('Clients')
 @ApiBearerAuth()
+@UseGuards(JwtAuthGuard)
 @ApiUnauthorizedResponse({ description: 'Unauthorized User' })
 @ApiBadRequestResponse({ description: 'Bad Request' })
 export class ClientController {
-  constructor(private readonly service: ClientService) {}
+  constructor(private readonly clientService: ClientService) {}
 
-  @Get('/:id')
+  @Get('/:clientId')
   @ApiOperation({ summary: 'Retrieve details about an existing Client' })
-  @ApiOkResponse({ description: 'Success', type: User })
-  async getUser(@Param('id', new ParseUUIDPipe()) id: string): Promise<User> {
-    return this.service.getUserById(id);
+  @ApiOkResponse({ description: 'Success', type: Client })
+  async getUser(
+    @Param('clientId', new ParseUUIDPipe()) clientId: string
+    ): Promise<Client> {
+    return this.clientService.getClientByEmail(clientId);
   }
 }
