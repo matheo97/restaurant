@@ -67,7 +67,6 @@ export class UserDAO {
       .where('user.companyId = :companyId', { companyId });
 
     if (searchCriteria) {
-      console.log('2');
       query.andWhere(
         new Brackets(qb => {
           qb.where('user.name ILIKE :searchCriteria', {
