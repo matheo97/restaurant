@@ -1,4 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { DeleteResult } from 'typeorm';
 import { Client } from '../../../entities/Client.entity';
 import { ClientDAO } from './client.dao';
 
@@ -17,4 +18,8 @@ export class ClientService {
   async getClientByEmail(email: string): Promise<Client> {
     return this.clientsDao.getClientByEmail(email);
   }  
+
+  async deleteClientById(clientId: string, companyId: String): Promise<DeleteResult>{
+    return this.clientsDao.deleteClientById(clientId, companyId);
+  }
 }

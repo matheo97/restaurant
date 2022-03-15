@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Repository } from 'typeorm';
+import { DeleteResult, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Client } from '../../../entities/Client.entity';
 
@@ -23,5 +23,15 @@ export class ClientDAO {
       .createQueryBuilder('client')
       .where('client.email = :email', { email })
       .getOne();
+  }
+
+  async deleteClientById(clientId: string, companyId: String): Promise<DeleteResult>{
+    return this.repository
+      .createQueryBuilder()
+      .delete()
+      .from(Client)
+      .where('clientId = :clientId', {clientId})
+      .andWhere('companyId = :companyId', {companyId})
+      .execute();
   }
 }
