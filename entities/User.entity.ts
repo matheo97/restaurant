@@ -21,6 +21,8 @@ import {
 } from '@nestjs/swagger';
 import { Auditable } from './Auditable';
 import { Company } from './Company.entity';
+import { UserRoleType } from '../src/modules/user/user.enum';
+import { Exclude, Type } from 'class-transformer';
 
 @Entity('user')
 export class User extends Auditable {
@@ -43,11 +45,11 @@ export class User extends Auditable {
   lastName?: string;
 
   @Column()
-  @IsOptional()
+  @IsDefined()
   @IsEmail()
-  @Length(0, 255)
+  @Length(3, 255)
   @ApiPropertyOptional({ description: 'User Email', maxLength: 255 })
-  email?: string;
+  email: string;
 
   @Column()
   @IsOptional()
@@ -56,7 +58,19 @@ export class User extends Auditable {
   @ApiPropertyOptional({ description: 'User Phone', maxLength: 10 })
   phone?: string;
 
+  @ApiProperty({
+    description: 'Only "Admin", "User", "Waiter" allowed so far.',
+    enum: UserRoleType,
+    minLength: 2,
+    maxLength: 60,
+  })
   @Column()
+  @IsDefined()
+  @Length(2, 60)
+  @Type(() => String)
+  role: string;
+
+  @Column({ select: false })
   @IsOptional()
   @IsHash('sha256')
   @Length(8, 100)
@@ -65,6 +79,7 @@ export class User extends Auditable {
     nullable: true,
     type: String,
   })
+  @Exclude({ toPlainOnly: true })
   password?: string;
 
   @Column({ name: 'company_id' })

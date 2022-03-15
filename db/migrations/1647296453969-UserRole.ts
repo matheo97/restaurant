@@ -8,7 +8,7 @@ export class UserRole1647296453969 implements MigrationInterface {
       new TableColumn({
         name: 'role',
         type: 'enum',
-        enum: [UserRoleType.ADMIN, UserRoleType.WAITER],
+        enum: [UserRoleType.ADMIN, UserRoleType.WAITER, UserRoleType.USER],
         enumName: 'userRoleType',
         default: `'admin'`,
         isNullable: false,
