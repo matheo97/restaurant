@@ -1,15 +1,75 @@
-import { MigrationInterface, QueryRunner } from 'typeorm';
+import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
 export class Item1646958763396 implements MigrationInterface {
-  name = 'Item1646958763396';
-
   public async up(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.query(
-      `CREATE TABLE "item" ("created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "id" uuid NOT NULL DEFAULT uuid_generate_v4(), "name" character varying NOT NULL, "cost" integer NOT NULL, "description" character varying NOT NULL, CONSTRAINT "PK_d3c0c71f23e7adcf952a1d13423" PRIMARY KEY ("id"))`
+    await queryRunner.createTable(
+      new Table({
+        name: 'item',
+        columns: [
+          {
+            name: 'id',
+            type: 'uuid',
+            isPrimary: true,
+            isGenerated: true,
+            generationStrategy: 'uuid',
+          },
+          {
+            name: 'name',
+            type: 'varchar',
+            length: '255',
+            isNullable: false,
+          },
+          {
+            name: 'description',
+            type: 'varchar',
+            length: '255',
+            isNullable: true,
+          },
+          {
+            name: 'type',
+            type: 'varchar',
+            length: '255',
+            isNullable: true,
+            enum: ['DRINK', 'FOOD'],
+          },
+          {
+            name: 'cost',
+            type: 'decimal',
+            isNullable: false,
+          },
+          {
+            name: 'company_id',
+            type: 'uuid',
+            isNullable: false,
+          },
+          {
+            name: 'created_at',
+            type: 'timestamptz',
+            default: 'CURRENT_TIMESTAMP',
+            isNullable: false,
+          },
+          {
+            name: 'updated_at',
+            type: 'timestamptz',
+            default: 'CURRENT_TIMESTAMP',
+            isNullable: false,
+          },
+        ],
+        foreignKeys: [
+          {
+            name: 'item_company_key',
+            columnNames: ['company_id'],
+            referencedTableName: 'company',
+            referencedColumnNames: ['id'],
+          },
+        ],
+      }),
+      true
     );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.query(`DROP TABLE "item"`);
+    await queryRunner.dropForeignKey('item', 'user_company_key');
+    await queryRunner.dropTable('item', true);
   }
 }

@@ -1,4 +1,10 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  JoinColumn,
+} from 'typeorm';
 import {
   IsDefined,
   IsUUID,
@@ -6,8 +12,13 @@ import {
   Length,
   IsDecimal,
 } from 'class-validator';
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import {
+  ApiHideProperty,
+  ApiProperty,
+  ApiPropertyOptional,
+} from '@nestjs/swagger';
 import { Auditable } from './Auditable';
+import { Company } from './Company.entity';
 
 @Entity('item')
 export class Item extends Auditable {
@@ -42,4 +53,25 @@ export class Item extends Auditable {
     type: String,
   })
   description?: string;
+
+  @Column()
+  @IsOptional()
+  @Length(2, 255)
+  @ApiPropertyOptional({
+    description: 'Item Type',
+    nullable: true,
+    type: String,
+    enum: ['DRINK', 'FOOD'],
+  })
+  type?: string;
+
+  @Column({ name: 'company_id' })
+  @IsOptional()
+  @ApiPropertyOptional({ description: 'Company Id' })
+  companyId?: string;
+
+  @ManyToOne(() => Company)
+  @JoinColumn({ name: 'company_id' })
+  @ApiHideProperty()
+  company?: Company;
 }
