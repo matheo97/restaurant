@@ -8,8 +8,8 @@ import { DeleteResult } from 'typeorm';
 export class ItemService {
   constructor(private readonly itemDao: ItemDao) {}
 
-  async createItem(item: Item): Promise<Item> {
-    return this.itemDao.createItem(item);
+  async createItem(item: Item, companyId: string): Promise<Item> {
+    return this.itemDao.saveItem({ ...item, companyId });
   }
 
   async updateItem(item: Item, companyId: string): Promise<Item> {
@@ -17,7 +17,7 @@ export class ItemService {
     if (!existingItem) {
       throw new BadRequestException('El Item no existe');
     }
-    return this.itemDao.updateItem({ ...item, companyId });
+    return this.itemDao.saveItem({ ...item, companyId });
   }
 
   async getItemById(itemId: string, companyId: string): Promise<Item> {

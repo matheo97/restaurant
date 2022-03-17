@@ -19,6 +19,7 @@ import {
 } from '@nestjs/swagger';
 import { Auditable } from './Auditable';
 import { Company } from './Company.entity';
+import { ItemType } from '../src/modules/item/item.enum';
 
 @Entity('item')
 export class Item extends Auditable {
@@ -37,7 +38,7 @@ export class Item extends Auditable {
   @Column()
   @IsDefined()
   @IsDecimal()
-  @ApiPropertyOptional({
+  @ApiProperty({
     description: 'Item Cost',
     type: IsDecimal,
     nullable: false,
@@ -55,13 +56,13 @@ export class Item extends Auditable {
   description?: string;
 
   @Column()
-  @IsOptional()
+  @IsDefined()
   @Length(2, 255)
-  @ApiPropertyOptional({
+  @ApiProperty({
     description: 'Item Type',
-    nullable: true,
+    nullable: false,
     type: String,
-    enum: ['DRINK', 'FOOD'],
+    enum: ItemType,
   })
   type?: string;
 

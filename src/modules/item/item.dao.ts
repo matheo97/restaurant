@@ -15,11 +15,7 @@ export class ItemDao {
     private readonly repository: Repository<Item>
   ) {}
 
-  async createItem(item: Item): Promise<Item> {
-    return this.repository.save(item);
-  }
-
-  async updateItem(item: Item): Promise<Item> {
+  async saveItem(item: Item): Promise<Item> {
     return this.repository.save(item);
   }
 

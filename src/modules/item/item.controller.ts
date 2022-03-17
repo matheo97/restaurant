@@ -18,26 +18,30 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { Request } from 'express';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { Item } from '../../../entities/Item.entity';
 import { ItemService } from './item.service';
 import { User } from '../../../entities/User.entity';
-import { ParseOrderByPipeUsers, ParseOrderPipeUsers } from '../user/user.pipes';
 import { PageResponse } from '../../constants/PageResponse';
 import { DeleteResult } from 'typeorm';
+import { ParseOrderByPipeItems, ParseOrderPipeItems } from './item.pipes';
+import RoleGuard from '../auth/roles.guard';
+import { UserRoleType } from '../user/user.enum';
 
 @Controller('/item')
 @ApiTags('Items')
 @ApiBearerAuth()
-@UseGuards(JwtAuthGuard)
+@UseGuards(RoleGuard([UserRoleType.ADMIN]))
 export class ItemController {
   constructor(private readonly itemService: ItemService) {}
 
-  @Post('')
+  @Post()
   @ApiOperation({ summary: 'Upsert an Item' })
   @ApiOkResponse({ description: 'Upsert an Item', type: Item })
-  async createItem(@Body() item: Item): Promise<Item> {
-    return this.itemService.createItem(item);
+  async createItem(
+    @Body() item: Item,
+    @Req() { user }: Request
+  ): Promise<Item> {
+    return this.itemService.createItem(item, (user as User).companyId);
   }
 
   @Put('/:itemId')
@@ -82,8 +86,8 @@ export class ItemController {
     @Query('page') page: number,
     @Query('pageSize') pageSize: number,
     @Query('q') searchCriteria: string,
-    @Query('order', ParseOrderPipeUsers) order: 'ASC' | 'DESC',
-    @Query('orderBy', ParseOrderByPipeUsers) orderBy: string
+    @Query('order', ParseOrderPipeItems) order: 'ASC' | 'DESC',
+    @Query('orderBy', ParseOrderByPipeItems) orderBy: string
   ): Promise<PageResponse<Item>> {
     return this.itemService.findItem(
       (user as any).company.id,
