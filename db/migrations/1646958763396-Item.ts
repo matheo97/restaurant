@@ -69,7 +69,7 @@ export class Item1646958763396 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropForeignKey('item', 'user_company_key');
+    await queryRunner.dropForeignKey('item', 'item_company_key');
     await queryRunner.dropTable('item', true);
   }
 }
