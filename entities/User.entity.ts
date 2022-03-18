@@ -70,7 +70,7 @@ export class User extends Auditable {
   @Type(() => String)
   role: string;
 
-  @Column({ select: false })
+  @Column()
   @IsOptional()
   @IsHash('sha256')
   @Length(8, 100)
