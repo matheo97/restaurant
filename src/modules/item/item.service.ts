@@ -12,12 +12,12 @@ export class ItemService {
     return this.itemDao.saveItem({ ...item, companyId });
   }
 
-  async updateItem(item: Item, companyId: string): Promise<Item> {
-    const existingItem = await this.itemDao.getItemById(item.id, companyId);
+  async updateItem(id: string, item: Item, companyId: string): Promise<Item> {
+    const existingItem = await this.itemDao.getItemById(id, companyId);
     if (!existingItem) {
       throw new BadRequestException('El Item no existe');
     }
-    return this.itemDao.saveItem({ ...item, companyId });
+    return this.itemDao.saveItem({ ...item, id });
   }
 
   async getItemById(itemId: string, companyId: string): Promise<Item> {

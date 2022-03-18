@@ -44,15 +44,15 @@ export class ItemController {
     return this.itemService.createItem(item, (user as User).companyId);
   }
 
-  @Put('/:itemId')
+  @Put('/:id')
   @ApiOperation({ summary: 'Upsert an Item' })
   @ApiOkResponse({ description: 'Upsert an Item', type: Item })
   async updateItem(
-    @Param('itemId') itemId: string,
+    @Param('id', ParseUUIDPipe) id: string,
     @Req() { user }: Request,
     @Body() item: Item
   ): Promise<Item> {
-    return this.itemService.updateItem(item, (user as User).companyId);
+    return this.itemService.updateItem(id, item, (user as User).companyId);
   }
 
   @Get('/:itemId')
@@ -65,7 +65,7 @@ export class ItemController {
     return this.itemService.getItemById(itemId, (user as User).companyId);
   }
 
-  @Delete('/:itemId')
+  @Delete('/:id')
   @ApiOperation({ summary: 'Delete item based on Item ID' })
   @ApiOkResponse({
     description: 'Delete item based on Item ID',
@@ -73,9 +73,9 @@ export class ItemController {
   })
   async deleteItem(
     @Req() { user }: Request,
-    @Param('itemId', ParseUUIDPipe) itemId: string
+    @Param('id', ParseUUIDPipe) id: string
   ): Promise<DeleteResult> {
-    return this.itemService.deleteItem(itemId, (user as any).company.id);
+    return this.itemService.deleteItem(id, (user as any).company.id);
   }
 
   @Get()
