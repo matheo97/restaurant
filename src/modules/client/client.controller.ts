@@ -30,18 +30,23 @@ import { DeleteResult } from 'typeorm';
 export class ClientController {
   constructor(private readonly clientService: ClientService) {}
 
-  @Get('/:clientId')
+  @Get('/:clientEmail')
   @ApiOperation({ summary: 'Retrieve details about an existing Client' })
   @ApiOkResponse({ description: 'Success', type: Client })
   async getClient(
-    @Param('clientId', new ParseUUIDPipe()) clientId: string
+    @Param('clientEmail', new ParseUUIDPipe()) clientEmail: string
     ): Promise<Client> {
-    return this.clientService.getClientByEmail(clientId);
+    return this.clientService.getClientByEmail(clientEmail);
   }
 
-  @Get()
+  @Get('/:clientId')
   @ApiOperation({summary: 'Retrieve details about an existing Client'})
-  
+  @ApiOkResponse({ description: 'All info of a User', type: Client })
+  async getUserInfoById(
+    @Param('clientId', ParseUUIDPipe) clientId: string
+  ): Promise<Client> {
+    return this.clientService.getClientById(clientId);
+  }
 
   @Put('/:clientId')
   @ApiOperation({ summary: 'Retrieve details about an existing Client' })
