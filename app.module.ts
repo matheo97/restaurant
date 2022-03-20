@@ -1,6 +1,11 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ClientModule, AuthModule, UserModule } from './src/modules';
+import {
+  ClientModule,
+  AuthModule,
+  UserModule,
+  ItemModule,
+} from './src/modules';
 import { ConfigModule } from '@nestjs/config';
 
 @Module({
@@ -10,6 +15,7 @@ import { ConfigModule } from '@nestjs/config';
     ClientModule,
     AuthModule,
     UserModule,
+    ItemModule,
   ],
   controllers: [],
   providers: [],
