@@ -1,4 +1,5 @@
 import { 
+  Body,
   Controller, 
   Delete, 
   Get, 
@@ -6,6 +7,8 @@ import {
   ParseUUIDPipe, 
   Post, 
   Put, 
+  Query, 
+  Req, 
   UseGuards
 } from '@nestjs/common';
 import {
@@ -18,10 +21,13 @@ import {
 } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { Client } from '../../../entities/Client.entity';
+import { Request } from 'express';
 import { ClientService } from './client.service';
 import { DeleteResult } from 'typeorm';
+import { ParseOrderByPipeClients, ParseOrderPipeClients } from './client.pipes';
+import { PageResponse } from 'src/constants/PageResponse';
 
-@Controller('/clients')
+@Controller('/client')
 @ApiTags('Clients')
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
@@ -30,49 +36,67 @@ import { DeleteResult } from 'typeorm';
 export class ClientController {
   constructor(private readonly clientService: ClientService) {}
 
-  @Get('/:clientEmail')
-  @ApiOperation({ summary: 'Retrieve details about an existing Client' })
-  @ApiOkResponse({ description: 'Success', type: Client })
-  async getClient(
-    @Param('clientEmail', new ParseUUIDPipe()) clientEmail: string
-    ): Promise<Client> {
-    return this.clientService.getClientByEmail(clientEmail);
-  }
-
   @Get('/:clientId')
   @ApiOperation({summary: 'Retrieve details about an existing Client'})
   @ApiOkResponse({ description: 'All info of a User', type: Client })
-  async getUserInfoById(
+  async getClientInfoById(
     @Param('clientId', ParseUUIDPipe) clientId: string
   ): Promise<Client> {
-    return this.clientService.getClientById(clientId);
+    return this.clientService.getClientInfoById(clientId);
   }
 
-  @Put('/:clientId')
-  @ApiOperation({ summary: 'Retrieve details about an existing Client' })
-  @ApiOkResponse({ description: 'Success', type: Client })
-  async updateClient(
-    @Param('clientId', new ParseUUIDPipe()) clientId: string
-    ): Promise<Client> {
-    return this.clientService.getClientByEmail(clientId);
-  }
-  
-  @Post('/')
-  @ApiOperation({ summary: 'Retrieve details about an existing Client' })
-  @ApiOkResponse({ description: 'Success', type: Client })
-  async setClient(
-    @Param('clientId', new ParseUUIDPipe()) clientId: string
-    ): Promise<Client> {
-    return this.clientService.getClientByEmail(clientId);
-  }
-
-  @Delete('/:clientId')
-  @ApiOperation({ summary: 'Delete an existing Client' })
-  @ApiOkResponse({ description: 'Delete client based in Client Id', type: DeleteResult })
-  async deleteClient(
-    @Param('clientId', new ParseUUIDPipe()) clientId: string
-    ): Promise<DeleteResult> {
-    return this.clientService.deleteClientById(clientId, (clientId as any).company.id);
+  @Get()
+  @ApiOperation({ summary: 'Get all info of all Users based on its Id' })
+  @ApiOkResponse({ description: 'All info of all Users', type: Client })
+  async find(
+    @Req() { user }: Request,
+    @Query('page') page: number,
+    @Query('pageSize') pageSize: number,
+    @Query('q') searchCriteria: string,
+    @Query('order', ParseOrderPipeClients) order: 'ASC' | 'DESC',
+    @Query('orderBy', ParseOrderByPipeClients) orderBy: string
+  ): Promise<PageResponse<Client>> {
+    return this.clientService.find(
+      (user as any).company.id,
+      page,
+      pageSize,
+      searchCriteria,
+      order,
+      orderBy
+    );
   }
 
+  @Put('/:id')
+  @ApiOperation({ summary: 'Update user' })
+  @ApiOkResponse({ description: 'User correctly updated', type: Client })
+  async update(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() user: Client
+  ): Promise<Client> {
+    return this.clientService.update(id, user, (user as any).companyId);
+  }
+
+
+  @Delete('/:id')
+  @ApiOperation({ summary: 'Delete user based on User ID' })
+  @ApiOkResponse({
+    description: 'Delete user based on User ID',
+    type: DeleteResult,
+  })
+  async delete(
+    @Req() { user }: Request,
+    @Param('id', ParseUUIDPipe) id: string
+  ): Promise<DeleteResult> {
+    return this.clientService.delete(id, (user as any).company.id);
+  }
+
+  @Post()
+  @ApiOperation({ summary: 'Create user' })
+  @ApiOkResponse({ description: 'User correctly created', type: Client })
+  async create(
+    @Req() { user }: Request,
+    @Body() userBody: Client
+  ): Promise<Client> {
+    return this.clientService.save(userBody, (user as any).company.id);
+  }
 }
