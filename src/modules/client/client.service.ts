@@ -1,5 +1,4 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { genSaltSync, hashSync } from 'bcryptjs';
 import { PageResponse } from 'src/constants/PageResponse';
 import { DeleteResult } from 'typeorm';
 import { Client } from '../../../entities/Client.entity';
@@ -10,52 +9,50 @@ export class ClientService {
   constructor(private readonly clientDao: ClientDAO) {}
 
   async getClientInfoById(id: string, companyId?: string): Promise<Client> {
-    return this.clientDao.getUserInfoById(id, companyId);
+    return this.clientDao.getClientInfoById(id, companyId);
   }
 
   async getClientByEmail(email: string, companyId?: string): Promise<Client> {
-    return this.clientDao.getUserByEmail(email, companyId);
+    return this.clientDao.getClientByEmail(email, companyId);
   }
 
-  async update(id: string, user: Client, companyId: string): Promise<Client> {
+  async update(id: string, client: Client, companyId: string): Promise<Client> {
     const existingUser = await this.getClientInfoById(id, companyId);
 
     if (!existingUser) {
-      throw new NotFoundException('El usuario enviado no existe');
+      throw new NotFoundException('Client sent does not exist');
     }
 
-    if (user.email) {
+    if (client.email) {
       const existingUserByEmail = await this.getClientByEmail(
-        user.email,
+        client.email,
         companyId
       );
 
       if (existingUserByEmail && existingUserByEmail.id !== id) {
         throw new BadRequestException(
-          `Usuario con email '(${user.email})' ya existe`
+          `Client with email '(${client.email})' already exist`
         );
       }
     }
 
     return this.clientDao.save({
-      ...user,
+      ...client,
       id,
     });
   }
 
-  async save(user: Client, companyId: string): Promise<Client> {
-    const existingUser = await this.getClientByEmail(user.email, companyId);
+  async save(client: Client, companyId: string): Promise<Client> {
+    const existingUser = await this.getClientByEmail(client.email, companyId);
 
     if (existingUser) {
       throw new NotFoundException(
-        `Usuario con email '(${user.email})' ya existe`
+        `Client with email '(${client.email})'already exist`
       );
     }
 
-    const salt = genSaltSync(+process.env.PASSWORD_SALT_ROUNDS);
-
     return this.clientDao.save({
-      ...user,
+      ...client,
       companyId    });
   }
 

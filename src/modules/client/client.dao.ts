@@ -12,20 +12,20 @@ export class ClientDAO {
     private readonly repository: Repository<Client>
   ) {}
 
-  async getUserInfoById(clientId: string, companyId?: string): Promise<Client> {
+  async getClientInfoById(clientId: string, companyId?: string): Promise<Client> {
     const query = this.repository
       .createQueryBuilder('client')
       .leftJoinAndSelect('client.company', 'company')
       .where('client.id = :clientId', { clientId });
 
     if (companyId) {
-      query.andWhere('user.companyId = :companyId', { companyId });
+      query.andWhere('client.companyId = :companyId', { companyId });
     }
 
     return query.getOne();
   }
 
-  async getUserByEmail(email: string, companyId?: string): Promise<Client> {
+  async getClientByEmail(email: string, companyId?: string): Promise<Client> {
     const query = this.repository
       .createQueryBuilder('client')
       .where('client.email = :email', { email });
@@ -37,8 +37,8 @@ export class ClientDAO {
     return query.getOne();
   }
 
-  async save(user: Client): Promise<Client> {
-    return this.repository.save(user);
+  async save(client: Client): Promise<Client> {
+    return this.repository.save(client);
   }
 
   async delete(id: string, companyId: string): Promise<DeleteResult> {
