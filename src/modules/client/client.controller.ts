@@ -26,6 +26,7 @@ import { ClientService } from './client.service';
 import { DeleteResult } from 'typeorm';
 import { ParseOrderByPipeClients, ParseOrderPipeClients } from './client.pipes';
 import { PageResponse } from 'src/constants/PageResponse';
+import { User } from 'entities/User.entity';
 
 @Controller('/client')
 @ApiTags('Clients')
@@ -40,9 +41,10 @@ export class ClientController {
   @ApiOperation({summary: 'Retrieve details about an existing Client'})
   @ApiOkResponse({ description: 'All info of a Client', type: Client })
   async getClientInfoById(
-    @Param('clientId', ParseUUIDPipe) clientId: string
+    @Param('clientId', ParseUUIDPipe) clientId: string,
+    @Req() {user }: Request
   ): Promise<Client> {
-    return this.clientService.getClientInfoById(clientId);
+    return this.clientService.getClientInfoById(clientId, (user as User).companyId);
   }
 
   @Get()
