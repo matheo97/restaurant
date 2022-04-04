@@ -38,7 +38,7 @@ export class ClientController {
 
   @Get('/:clientId')
   @ApiOperation({summary: 'Retrieve details about an existing Client'})
-  @ApiOkResponse({ description: 'All info of a User', type: Client })
+  @ApiOkResponse({ description: 'All info of a Client', type: Client })
   async getClientInfoById(
     @Param('clientId', ParseUUIDPipe) clientId: string
   ): Promise<Client> {
@@ -46,8 +46,8 @@ export class ClientController {
   }
 
   @Get()
-  @ApiOperation({ summary: 'Get all info of all Users based on its Id' })
-  @ApiOkResponse({ description: 'All info of all Users', type: Client })
+  @ApiOperation({ summary: 'Get all info of all Clients based on its Id' })
+  @ApiOkResponse({ description: 'All info of all Clients', type: Client })
   async find(
     @Req() { user }: Request,
     @Query('page') page: number,
@@ -67,20 +67,20 @@ export class ClientController {
   }
 
   @Put('/:id')
-  @ApiOperation({ summary: 'Update user' })
-  @ApiOkResponse({ description: 'User correctly updated', type: Client })
+  @ApiOperation({ summary: 'Update client' })
+  @ApiOkResponse({ description: 'Client correctly updated', type: Client })
   async update(
     @Param('id', ParseUUIDPipe) id: string,
-    @Body() user: Client
+    @Body() client: Client
   ): Promise<Client> {
-    return this.clientService.update(id, user, (user as any).companyId);
+    return this.clientService.update(id, client, (client as any).companyId);
   }
 
 
   @Delete('/:id')
-  @ApiOperation({ summary: 'Delete user based on User ID' })
+  @ApiOperation({ summary: 'Delete client based on Client ID' })
   @ApiOkResponse({
-    description: 'Delete user based on User ID',
+    description: 'Delete client based on Client ID',
     type: DeleteResult,
   })
   async delete(
@@ -91,12 +91,12 @@ export class ClientController {
   }
 
   @Post()
-  @ApiOperation({ summary: 'Create user' })
-  @ApiOkResponse({ description: 'User correctly created', type: Client })
+  @ApiOperation({ summary: 'Create client' })
+  @ApiOkResponse({ description: 'Client correctly created', type: Client })
   async create(
     @Req() { user }: Request,
-    @Body() userBody: Client
+    @Body() clientBody: Client
   ): Promise<Client> {
-    return this.clientService.save(userBody, (user as any).company.id);
+    return this.clientService.save(clientBody, (user as any).company.id);
   }
 }

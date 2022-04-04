@@ -17,19 +17,19 @@ export class ClientService {
   }
 
   async update(id: string, client: Client, companyId: string): Promise<Client> {
-    const existingUser = await this.getClientInfoById(id, companyId);
+    const existingClient = await this.getClientInfoById(id, companyId);
 
-    if (!existingUser) {
+    if (!existingClient) {
       throw new NotFoundException('Client sent does not exist');
     }
 
     if (client.email) {
-      const existingUserByEmail = await this.getClientByEmail(
+      const existingClientByEmail = await this.getClientByEmail(
         client.email,
         companyId
       );
 
-      if (existingUserByEmail && existingUserByEmail.id !== id) {
+      if (existingClientByEmail && existingClientByEmail.id !== id) {
         throw new BadRequestException(
           `Client with email '(${client.email})' already exist`
         );
@@ -43,9 +43,9 @@ export class ClientService {
   }
 
   async save(client: Client, companyId: string): Promise<Client> {
-    const existingUser = await this.getClientByEmail(client.email, companyId);
+    const existingClient = await this.getClientByEmail(client.email, companyId);
 
-    if (existingUser) {
+    if (existingClient) {
       throw new NotFoundException(
         `Client with email '(${client.email})'already exist`
       );

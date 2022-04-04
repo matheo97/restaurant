@@ -70,7 +70,7 @@ export class ClientDAO {
             searchCriteria: `%${searchCriteria}%`,
           });
 
-          ['lastName', 'email', 'phone', 'role'].forEach(column => {
+          ['lastName', 'email', 'address', 'phone', 'role'].forEach(column => {
             qb.orWhere(`client.${column} ILIKE :searchCriteria`, {
               searchCriteria: `%${searchCriteria}%`,
             });
@@ -80,7 +80,7 @@ export class ClientDAO {
     }
 
     const [clients, total] = await query
-      .orderBy(`user.${orderBy}`, order)
+      .orderBy(`client.${orderBy}`, order)
       .skip(pageSize && page ? pageSize * (page - 1) : 0)
       .take(pageSize || 0)
       .getManyAndCount();

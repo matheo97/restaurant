@@ -20,11 +20,12 @@ export class ParseOrderPipeClients implements PipeTransform {
 @Injectable()
 export class ParseOrderByPipeClients implements PipeTransform {
   transform(value: string): string | null {
-    const orderByUsers = [
+    const orderByClients = [
       'name',
       'lastName',
       'role',
       'email',
+      'address',
       'phone',
       'createdAt',
       'updatedAt',
@@ -34,12 +35,12 @@ export class ParseOrderByPipeClients implements PipeTransform {
       return null;
     }
 
-    if (orderByUsers.filter(orderBy => orderBy === value)[0]) {
+    if (orderByClients.filter(orderBy => orderBy === value)[0]) {
       return value;
     }
 
     throw new BadRequestException(
-      `OrderBy debe estar includo en esta lista ${orderByUsers.toString()}`
+      `OrderBy must be included in this list ${orderByClients.toString()}`
     );
   }
 }
