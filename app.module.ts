@@ -5,6 +5,8 @@ import {
   AuthModule,
   UserModule,
   ItemModule,
+  OrderItemModule,
+  OrderModule,
 } from './src/modules';
 import { ConfigModule } from '@nestjs/config';
 
@@ -16,6 +18,8 @@ import { ConfigModule } from '@nestjs/config';
     AuthModule,
     UserModule,
     ItemModule,
+    OrderModule,
+    OrderItemModule,
   ],
   controllers: [],
   providers: [],
