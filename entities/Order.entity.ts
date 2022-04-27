@@ -24,6 +24,7 @@ import { Company } from './Company.entity';
 import { User } from './User.entity';
 import { OrderStatus } from '../src/modules/order/order.enum';
 import { Item } from './Item.entity';
+import { Client } from './Client.entity';
 
 @Entity('order')
 export class Order extends Auditable {
@@ -42,7 +43,7 @@ export class Order extends Auditable {
     type: String,
     enum: OrderStatus,
   })
-  status?: string;
+  status?: OrderStatus;
 
   @Column()
   @IsDefined()
@@ -93,6 +94,16 @@ export class Order extends Auditable {
   @JoinColumn({ name: 'company_id' })
   @ApiHideProperty()
   company?: Company;
+
+  @Column({ name: 'client_id' })
+  @IsOptional()
+  @ApiPropertyOptional({ description: 'Client Id' })
+  clientId?: string;
+
+  @ManyToOne(() => Client)
+  @JoinColumn({ name: 'client_id' })
+  @ApiHideProperty()
+  client?: Client;
 
   @Column({ name: 'user_id' })
   @IsOptional()

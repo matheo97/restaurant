@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable, PipeTransform } from '@nestjs/common';
 
 @Injectable()
-export class ParseOrderPipeOrderItems implements PipeTransform {
+export class ParseOrderPipeClients implements PipeTransform {
   transform(value: string): string | null {
     if (!value) {
       return null;
@@ -18,12 +18,15 @@ export class ParseOrderPipeOrderItems implements PipeTransform {
 }
 
 @Injectable()
-export class ParseOrderByPipeOrderItems implements PipeTransform {
+export class ParseOrderByPipeClients implements PipeTransform {
   transform(value: string): string | null {
-    const orderByOrderItems = [
-      'orderId',
-      'itemId',
-      'companyId',
+    const orderByClients = [
+      'name',
+      'lastName',
+      'role',
+      'email',
+      'address',
+      'phone',
       'createdAt',
       'updatedAt',
     ];
@@ -32,12 +35,12 @@ export class ParseOrderByPipeOrderItems implements PipeTransform {
       return null;
     }
 
-    if (orderByOrderItems.filter(orderBy => orderBy === value)[0]) {
+    if (orderByClients.filter(orderBy => orderBy === value)[0]) {
       return value;
     }
 
     throw new BadRequestException(
-      `OrderBy debe estar includo en esta lista ${orderByOrderItems.toString()}`
+      `OrderBy must be included in this list ${orderByClients.toString()}`
     );
   }
 }

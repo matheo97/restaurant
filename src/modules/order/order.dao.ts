@@ -42,9 +42,12 @@ export class OrderDao {
       query.andWhere(
         new Brackets(qb => {
           // Update this code once the customer is merged to include the filter by customer name
-          // qb.where('order.name ILIKE :searchCriteria', {
-          //   searchCriteria: `%${searchCriteria}%`,
-          // });
+          qb.where(
+            'order.client_id = client.id and client.name ILIKE :searchCriteria',
+            {
+              searchCriteria: `%${searchCriteria}%`,
+            }
+          );
 
           ['status', 'companyId', 'userId'].forEach(column => {
             qb.orWhere(`order.${column} ILIKE :searchCriteria`, {
