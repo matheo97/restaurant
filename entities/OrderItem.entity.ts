@@ -12,7 +12,6 @@ import {
   ApiPropertyOptional,
 } from '@nestjs/swagger';
 import { Auditable } from './Auditable';
-import { Company } from './Company.entity';
 import { Order } from './Order.entity';
 import { Item } from './Item.entity';
 
@@ -43,14 +42,4 @@ export class OrderItem extends Auditable {
   @JoinColumn({ name: 'item_id' })
   @ApiHideProperty()
   item?: Item;
-
-  @Column({ name: 'company_id' })
-  @IsOptional()
-  @ApiPropertyOptional({ description: 'Company Id' })
-  companyId?: string;
-
-  @ManyToOne(() => Company)
-  @JoinColumn({ name: 'company_id' })
-  @ApiHideProperty()
-  company?: Company;
 }

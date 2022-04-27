@@ -42,12 +42,12 @@ export class OrderAndOrderItem1649259545966 implements MigrationInterface {
             isNullable: false,
           },
           {
-            name: 'cost',
-            type: 'decimal',
+            name: 'company_id',
+            type: 'uuid',
             isNullable: false,
           },
           {
-            name: 'company_id',
+            name: 'client_id',
             type: 'uuid',
             isNullable: false,
           },
@@ -74,6 +74,12 @@ export class OrderAndOrderItem1649259545966 implements MigrationInterface {
             name: 'order_company_key',
             columnNames: ['company_id'],
             referencedTableName: 'company',
+            referencedColumnNames: ['id'],
+          },
+          {
+            name: 'order_client_key',
+            columnNames: ['client_id'],
+            referencedTableName: 'client',
             referencedColumnNames: ['id'],
           },
           {
@@ -104,12 +110,7 @@ export class OrderAndOrderItem1649259545966 implements MigrationInterface {
             isNullable: false,
           },
           {
-            name: 'user_id',
-            type: 'uuid',
-            isNullable: false,
-          },
-          {
-            name: 'company_id',
+            name: 'item_id',
             type: 'uuid',
             isNullable: false,
           },
@@ -128,21 +129,15 @@ export class OrderAndOrderItem1649259545966 implements MigrationInterface {
         ],
         foreignKeys: [
           {
-            name: 'order_item_company_key',
-            columnNames: ['company_id'],
-            referencedTableName: 'company',
-            referencedColumnNames: ['id'],
-          },
-          {
-            name: 'order_item_user_key',
-            columnNames: ['user_id'],
-            referencedTableName: 'user',
-            referencedColumnNames: ['id'],
-          },
-          {
             name: 'order_item_order_key',
             columnNames: ['order_id'],
             referencedTableName: 'order',
+            referencedColumnNames: ['id'],
+          },
+          {
+            name: 'order_item_item_key',
+            columnNames: ['item_id'],
+            referencedTableName: 'item',
             referencedColumnNames: ['id'],
           },
         ],
@@ -152,9 +147,10 @@ export class OrderAndOrderItem1649259545966 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.dropForeignKey('order_item', 'order_item_item_key');
     await queryRunner.dropForeignKey('order_item', 'order_item_company_key');
-    await queryRunner.dropForeignKey('order_item', 'order_item_user_key');
     await queryRunner.dropForeignKey('order_item', 'order_item_order_key');
+    await queryRunner.dropForeignKey('order', 'order_client_key');
     await queryRunner.dropForeignKey('order', 'order_company_key');
     await queryRunner.dropForeignKey('order', 'order_user_key');
     await queryRunner.dropTable('order_item', true);
