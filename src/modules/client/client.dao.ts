@@ -2,7 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { Brackets, DeleteResult, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Client } from '../../../entities/Client.entity';
-import { DEFAULT_PAGE_NO, DEFAULT_PAGE_SIZE } from 'src/constants/DefaultPageParams';
+import {
+  DEFAULT_PAGE_NO,
+  DEFAULT_PAGE_SIZE,
+} from '../../constants/DefaultPageParams';
 import { PageResponse } from 'src/constants/PageResponse';
 
 @Injectable()
@@ -12,7 +15,10 @@ export class ClientDAO {
     private readonly repository: Repository<Client>
   ) {}
 
-  async getClientInfoById(clientId: string, companyId?: string): Promise<Client> {
+  async getClientInfoById(
+    clientId: string,
+    companyId?: string
+  ): Promise<Client> {
     const query = this.repository
       .createQueryBuilder('client')
       .leftJoinAndSelect('client.company', 'company')
