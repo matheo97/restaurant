@@ -6,10 +6,11 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { User } from '../../../entities/User.entity';
+import { UserRoleType } from '../user/user.enum';
 import { AccessToken } from './auth.dto';
 import { AuthService } from './auth.service';
-import { JwtAuthGuard } from './jwt-auth.guard';
 import { LocalAuthGuard } from './local-auth.guard';
+import RoleGuard from './roles.guard';
 
 @Controller('auth')
 @ApiTags('Authentication')
@@ -25,7 +26,9 @@ export class AuthController {
     return this.authService.login(req.user);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(
+    RoleGuard([UserRoleType.ADMIN, UserRoleType.WAITER, UserRoleType.USER])
+  )
   @Get('/profile')
   @ApiOperation({ summary: 'Get user from Request' })
   @ApiOkResponse({ description: 'User from Request', type: User })
