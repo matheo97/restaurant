@@ -6,7 +6,7 @@ import {
   DEFAULT_PAGE_NO,
   DEFAULT_PAGE_SIZE,
 } from '../../constants/DefaultPageParams';
-import { PageResponse } from 'src/constants/PageResponse';
+import { PageResponse } from '../../constants/PageResponse';
 
 @Injectable()
 export class ClientDAO {

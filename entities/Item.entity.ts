@@ -4,6 +4,8 @@ import {
   PrimaryGeneratedColumn,
   ManyToOne,
   JoinColumn,
+  ManyToMany,
+  JoinTable,
 } from 'typeorm';
 import {
   IsDefined,
@@ -20,6 +22,7 @@ import {
 import { Auditable } from './Auditable';
 import { Company } from './Company.entity';
 import { ItemType } from '../src/modules/item/item.enum';
+import { Order } from './Order.entity';
 
 @Entity('item')
 export class Item extends Auditable {
@@ -75,4 +78,12 @@ export class Item extends Auditable {
   @JoinColumn({ name: 'company_id' })
   @ApiHideProperty()
   company?: Company;
+
+  @ManyToMany(() => Order)
+  @JoinTable({
+    name: 'order_item',
+    joinColumn: { name: 'item_id', referencedColumnName: 'id' },
+    inverseJoinColumn: { name: 'order_id', referencedColumnName: 'id' },
+  })
+  orders?: Order[];
 }

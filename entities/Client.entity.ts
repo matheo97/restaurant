@@ -55,14 +55,12 @@ export class Client extends Auditable {
   @ApiPropertyOptional({ description: 'Client Address', maxLength: 255 })
   address?: string;
 
-
   @Column()
   @IsOptional()
   @IsPhoneNumber()
   @Length(0, 10)
   @ApiPropertyOptional({ description: 'Client Phone', maxLength: 10 })
   phone?: string;
-
 
   @Column({ name: 'company_id' })
   @IsOptional()

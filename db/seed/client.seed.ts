@@ -5,6 +5,7 @@ export const clientSeed = [
     email: 'admin@gmail.com',
     address: 'Sutter Street 405',
     phone: '9876543212',
+    address: 'Avenida Siempre Viva',
     companyId: 'cb9dee02-c7b1-4d7c-9b2c-253176e04a32',
   },
 ];
