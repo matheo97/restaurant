@@ -11,22 +11,31 @@ export class AuthService {
   ) {}
 
   async validateUser(username: string, pass: string): Promise<any> {
-    const user = await this.userService.getUserByEmail(username);
+    const user = await this.userService.getUserByEmail(
+      username,
+      undefined,
+      true
+    );
+
     if (user && compareSync(pass, user.password)) {
-      delete user.password;
       return {
         userId: user.id,
         username: user.email,
+        password: undefined,
         ...user,
       };
     }
-    return new UnauthorizedException('There was an error, try again later.');
+
+    throw new UnauthorizedException(
+      'Se producido un problema, por favor intentar mas tarde'
+    );
   }
 
   async login(user: any): Promise<AccessToken> {
     const payload = { username: user.username, sub: user.userId };
     return {
       accessToken: this.jwtService.sign(payload, { expiresIn: 86400 * 15 }),
+      tokenType: 'Bearer',
     };
   }
 }
