@@ -1,5 +1,5 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
-import { companySeed, userSeed } from '../seed/companyUser.seed';
+import { companySeed } from '../seed/companyUser.seed';
 
 export class CompanyAndUser1646340513321 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<any> {
@@ -126,7 +126,6 @@ export class CompanyAndUser1646340513321 implements MigrationInterface {
     );
 
     await queryRunner.manager.getRepository('company').save(companySeed);
-    await queryRunner.manager.getRepository('user').save(userSeed);
   }
 
   public async down(queryRunner: QueryRunner): Promise<any> {

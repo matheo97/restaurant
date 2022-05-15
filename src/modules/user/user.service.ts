@@ -16,8 +16,12 @@ export class UserService {
     return this.userDao.getUserInfoById(id, companyId);
   }
 
-  async getUserByEmail(email: string, companyId?: string): Promise<User> {
-    return this.userDao.getUserByEmail(email, companyId);
+  async getUserByEmail(
+    email: string,
+    companyId?: string,
+    password?: boolean
+  ): Promise<User> {
+    return this.userDao.getUserByEmail(email, companyId, password);
   }
 
   async update(id: string, user: User, companyId: string): Promise<User> {

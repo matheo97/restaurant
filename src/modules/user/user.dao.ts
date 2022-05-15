@@ -25,10 +25,19 @@ export class UserDAO {
       query.andWhere('user.companyId = :companyId', { companyId });
     }
 
-    return query.getOne();
+    const user = await query.getOne();
+
+    return {
+      ...user,
+      password: undefined,
+    };
   }
 
-  async getUserByEmail(email: string, companyId?: string): Promise<User> {
+  async getUserByEmail(
+    email: string,
+    companyId?: string,
+    password?: boolean
+  ): Promise<User> {
     const query = this.repository
       .createQueryBuilder('user')
       .where('user.email = :email', { email });
@@ -37,11 +46,20 @@ export class UserDAO {
       query.andWhere('user.companyId = :companyId', { companyId });
     }
 
-    return query.getOne();
+    const user = await query.getOne();
+
+    return {
+      ...user,
+      password: password ? user.password : undefined,
+    };
   }
 
   async save(user: User): Promise<User> {
-    return this.repository.save(user);
+    const userCreated = await this.repository.save(user);
+    return {
+      ...userCreated,
+      password: undefined,
+    };
   }
 
   async delete(id: string, companyId: string): Promise<DeleteResult> {
@@ -89,7 +107,7 @@ export class UserDAO {
       .getManyAndCount();
 
     return {
-      results: users,
+      results: users.map(user => ({ ...user, password: undefined })),
       total,
     };
   }
