@@ -42,6 +42,11 @@ export class Transaction1651192565283 implements MigrationInterface {
             isNullable: false,
           },
           {
+            name: 'order_id',
+            type: 'uuid',
+            isNullable: false,
+          },
+          {
             name: 'created_at',
             type: 'timestamptz',
             default: 'CURRENT_TIMESTAMP',
@@ -62,8 +67,8 @@ export class Transaction1651192565283 implements MigrationInterface {
             referencedColumnNames: ['id'],
           },
           {
-            name: 'transaction_client_key',
-            columnNames: ['client_id'],
+            name: 'transaction_order_key',
+            columnNames: ['order_id'],
             referencedTableName: 'client',
             referencedColumnNames: ['id'],
           },
@@ -81,7 +86,7 @@ export class Transaction1651192565283 implements MigrationInterface {
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.dropForeignKey('transaction', 'transaction_company_key');
-    await queryRunner.dropForeignKey('transaction', 'transaction_client_key');
+    await queryRunner.dropForeignKey('transaction', 'transaction_order_key');
     await queryRunner.dropForeignKey('transaction', 'transaction_user_key');
     await queryRunner.dropTable('transaction', true);
   }
