@@ -44,7 +44,7 @@ export class Transaction extends Auditable {
     type: String,
     enum: TransactionEnum,
   })
-  status?: string;
+  status?: TransactionEnum;
 
   @Column({ name: 'order_id' })
   @IsOptional()
