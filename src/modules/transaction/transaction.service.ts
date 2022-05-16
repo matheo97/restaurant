@@ -17,7 +17,7 @@ export class TransactionService {
 
   async updateTransaction(
     id: string,
-    order: Transaction,
+    transaction: Transaction,
     companyId: string
   ): Promise<Transaction> {
     const existingTransaction = await this.transactionDao.getTransactionById(
@@ -25,9 +25,9 @@ export class TransactionService {
       companyId
     );
     if (!existingTransaction) {
-      throw new BadRequestException('El Order no existe');
+      throw new BadRequestException('El Transaction no existe');
     }
-    return this.transactionDao.saveTransaction({ ...order, id });
+    return this.transactionDao.saveTransaction({ ...transaction, id });
   }
 
   async getTransactionsByStatus(

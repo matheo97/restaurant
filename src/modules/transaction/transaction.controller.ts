@@ -46,6 +46,7 @@ export class TransactionController {
     @Body() transaction: Transaction,
     @Req() { user }: Request
   ): Promise<Transaction> {
+    console.log(transaction);
     return this.transactionService.createTransaction(
       transaction,
       (user as User).companyId
@@ -67,7 +68,7 @@ export class TransactionController {
     );
   }
 
-  @Get('/:status')
+  @Get('/status/:status')
   @ApiOperation({ summary: 'Get all Transaction information by status' })
   @ApiOkResponse({
     description: 'All Transaction information',

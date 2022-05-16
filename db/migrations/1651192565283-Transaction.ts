@@ -69,7 +69,7 @@ export class Transaction1651192565283 implements MigrationInterface {
           {
             name: 'transaction_order_key',
             columnNames: ['order_id'],
-            referencedTableName: 'client',
+            referencedTableName: 'order',
             referencedColumnNames: ['id'],
           },
           {
