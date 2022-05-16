@@ -46,7 +46,6 @@ export class TransactionController {
     @Body() transaction: Transaction,
     @Req() { user }: Request
   ): Promise<Transaction> {
-    console.log(transaction);
     return this.transactionService.createTransaction(
       transaction,
       (user as User).companyId

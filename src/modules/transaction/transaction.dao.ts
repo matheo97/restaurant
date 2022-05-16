@@ -16,7 +16,6 @@ export class TransactionDao {
   ) {}
 
   async saveTransaction(transaction: Transaction): Promise<Transaction> {
-    console.log(transaction);
     return this.repository.save(transaction);
   }
 
