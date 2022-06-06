@@ -19,7 +19,7 @@ import {
     ApiTags,
     ApiUnauthorizedResponse,
   } from '@nestjs/swagger';
-import { Expense } from 'entities/Expense.entity';
+import { Expense } from "../../../entities/Expense.entity";
 import { User } from 'entities/User.entity';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { ExpenseService } from './expense.service';

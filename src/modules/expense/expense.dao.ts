@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Expense } from "entities/Expense.entity";
-import { DEFAULT_PAGE_NO, DEFAULT_PAGE_SIZE } from "src/constants/DefaultPageParams";
+import { Expense } from "../../../entities/Expense.entity";
+import { DEFAULT_PAGE_NO, DEFAULT_PAGE_SIZE } from "../../../src/constants/DefaultPageParams";
 import { PageResponse } from "src/constants/PageResponse";
 import { Brackets, DeleteResult, Repository } from "typeorm";
 

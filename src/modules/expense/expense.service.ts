@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Expense } from "entities/Expense.entity";
+import { Expense } from "../../../entities/Expense.entity";
 import { PageResponse } from "src/constants/PageResponse";
 import { DeleteResult } from "typeorm";
 import { ExpenseDAO } from "./expense.dao";
