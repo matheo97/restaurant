@@ -1,12 +1,12 @@
 import { ApiHideProperty, ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import { IsCurrency, IsDefined, IsOptional, IsUUID, Length } from "class-validator";
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
 import { Auditable } from "./Auditable";
 import { Expense } from "./Expense.entity";
 
 @Entity('expenseitem')
 export class ExpenseItem extends Auditable{
-    @PrimaryGeneratedColumn('uuid')
+    @PrimaryColumn({ name: 'id' })
     @IsOptional()
     @IsUUID()
     @ApiProperty({description: 'ExpenseItem Identifier'})

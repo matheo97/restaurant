@@ -20,7 +20,7 @@ import {
     ApiUnauthorizedResponse,
   } from '@nestjs/swagger';
 import { Expense } from "../../../entities/Expense.entity";
-import { User } from 'entities/User.entity';
+import { User } from '../../../entities/User.entity';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { ExpenseService } from './expense.service';
 import { Request } from 'express';
@@ -49,7 +49,7 @@ export class ExpenseController {
 
   @Get()
   @ApiOperation({ summary: 'Get all info of all Expenses based on its Id'})
-  @ApiOkResponse({ description: 'All info of all Expenses', type: Expense})
+  @ApiOkResponse({ description: 'All info of all Expenses', type: User})
   async find(
     @Req() { user }: Request,
     @Query('page') page: number,

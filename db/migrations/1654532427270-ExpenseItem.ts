@@ -10,11 +10,10 @@ export class ExpenseItem1654532427270 implements MigrationInterface {
               columns: [
                 {
                   name: 'id',
-                  type: 'uuid',
+                  type: 'varchar',
+                  length: '255',
                   isPrimary: true,
-                  isGenerated: true,
-                  generationStrategy: 'uuid',
-                },
+                  isNullable: false,                },
                 {
                   name: 'description',
                   type: 'varchar',

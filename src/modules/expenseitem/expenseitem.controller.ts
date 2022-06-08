@@ -20,7 +20,6 @@ import {
     ApiUnauthorizedResponse,
   } from '@nestjs/swagger';
 import { ExpenseItem } from "../../../entities/ExpenseItem.entity";
-import { User } from 'entities/User.entity';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { ExpenseItemService } from './expenseitem.service';
 import { Request } from 'express';
@@ -42,7 +41,6 @@ export class ExpenseItemController {
   @ApiOkResponse({description: 'All info of an expense', type: ExpenseItem})
   async getExpenseInfoById(
     @Param('expenseitemId', ParseUUIDPipe) expenseitemId: string,
-    @Req() {user }: Request
   ): Promise<ExpenseItem>{
     return this.expenseItemService.getExpenseInfoById(expenseitemId);
   }
@@ -85,7 +83,6 @@ export class ExpenseItemController {
     type: DeleteResult,
   })
   async delete(
-    @Req() {user}: Request,
     @Param('id', ParseUUIDPipe) id: string
   ): Promise<DeleteResult> {
     return this.expenseItemService.deleteExpense(id);
@@ -95,7 +92,6 @@ export class ExpenseItemController {
   @ApiOperation({ summary: 'Create expenseItem'})
   @ApiOkResponse({ description: 'Expense correctly created', type: ExpenseItem})
   async created(
-    @Req() {user}: Request,
     @Body() expenseItemBody: ExpenseItem
   ): Promise<ExpenseItem>{
     return this.expenseItemService.createExpense(expenseItemBody);

@@ -49,7 +49,6 @@ export class ExpenseDAO {
           const query = this.repository
           .createQueryBuilder('expense')
           .where('expense.companyId = :companyId', {companyId});
-
           if (searchCriteria) {
               query.andWhere(
                   new Brackets(qb => {
@@ -57,11 +56,7 @@ export class ExpenseDAO {
                           searchCriteria: `%${searchCriteria}%`,
                       });
 
-                      ['description',
-                      'cost',
-                      'frecuency',
-                      'createdAt',
-                      'updatedAt',].forEach(column => {
+                      ['description','cost','frecuency'].forEach(column => {
                           qb.orWhere(`expense.${column} ILIKE :searchCriteria`, {
                               searchCriteria: `%${searchCriteria}%`,
                           });

@@ -53,9 +53,7 @@ export class ExpenseItemDAO {
                       });
 
                       ['description',
-                      'cost',
-                      'createdAt',
-                      'updatedAt',].forEach(column => {
+                      'cost'].forEach(column => {
                           qb.orWhere(`expenseitem.${column} ILIKE :searchCriteria`, {
                               searchCriteria: `%${searchCriteria}%`,
                           });
