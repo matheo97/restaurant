@@ -6,6 +6,7 @@ import {
   UserModule,
   ItemModule,
   OrderModule,
+  TransactionModule,
 } from './src/modules';
 import { ConfigModule } from '@nestjs/config';
 
@@ -18,6 +19,7 @@ import { ConfigModule } from '@nestjs/config';
     UserModule,
     ItemModule,
     OrderModule,
+    TransactionModule,
   ],
   controllers: [],
   providers: [],
