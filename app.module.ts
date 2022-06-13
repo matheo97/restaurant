@@ -8,6 +8,7 @@ import {
   ExpenseModule,
   OrderModule,
   ExpenseItemModule,
+  TransactionModule,
 } from './src/modules';
 import { ConfigModule } from '@nestjs/config';
 
@@ -21,7 +22,8 @@ import { ConfigModule } from '@nestjs/config';
     ItemModule,
     ExpenseModule,
     OrderModule,
-    ExpenseItemModule
+    ExpenseItemModule,
+    TransactionModule,
   ],
   controllers: [],
   providers: [],
