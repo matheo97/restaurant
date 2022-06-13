@@ -7,7 +7,6 @@ import { Expense } from "./Expense.entity";
 @Entity('expenseitem')
 export class ExpenseItem extends Auditable{
     @PrimaryColumn({ name: 'id' })
-    @IsOptional()
     @IsUUID()
     @ApiProperty({description: 'ExpenseItem Identifier'})
     id?: string;
@@ -19,7 +18,6 @@ export class ExpenseItem extends Auditable{
     description: string;
 
     @Column()
-    @IsOptional()
     @IsCurrency()
     @Length(0, 255)
     @ApiPropertyOptional({description:'ExpenseItem Cost', maxLength: 255})
