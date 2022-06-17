@@ -5,6 +5,9 @@
     "author": "",
     "private": true,
     "license": "UNLICENSED",
+    "engines": {
+      "yarn": "^1.22.19"
+    },
     "scripts": {
       "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
       "start": "nodemon --ext js,ts,json --exec ts-node main",
