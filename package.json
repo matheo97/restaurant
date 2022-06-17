@@ -6,7 +6,7 @@
     "private": true,
     "license": "UNLICENSED",
     "engines": {
-      "yarn": "^1.22.19"
+      "yarn": "1.22.19"
     },
     "scripts": {
       "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
