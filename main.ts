@@ -18,6 +18,6 @@ async function bootstrap() {
 
   app.use(logger('[:date[iso]] :method :url :status :response-time ms'));
 
-  await app.listen(Number(process.env.PORT));
+  await app.listen(Number(process.env.APP_PORT));
 }
 bootstrap();
