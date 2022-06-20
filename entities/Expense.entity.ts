@@ -3,6 +3,7 @@ import { IsCurrency, IsDefined, IsOptional, IsUUID, Length } from "class-validat
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Auditable } from "./Auditable";
 import { Company } from "./Company.entity";
+import { ExpenseItem } from "./ExpenseItem.entity";
 
 @Entity('expense')
 export class Expense extends Auditable{
@@ -25,7 +26,12 @@ export class Expense extends Auditable{
 
     @Column()
     @Length(0, 255)
-    @ApiPropertyOptional({description:'Expense Frecuency', maxLength: 255})
+    @ApiProperty({
+        description:'Expense Frecuency', 
+        nullable: false,
+        type: String,
+        enum: ExpenseItem,    
+    })
     frecuency?: string;
 
     @Column({ name: 'company_id' })

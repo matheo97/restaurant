@@ -12,7 +12,7 @@ export class ExpenseService{
         private readonly expenseDao: ExpenseDAO){}
 
     async createExpense(expense: Expense, companyId: string): Promise<Expense>{
-        return this.expenseDao.save(expense);
+        return this.expenseDao.save({...expense, companyId});
     }
 
     async update(id: string, expense: Expense, companyId: string): Promise<Expense> {

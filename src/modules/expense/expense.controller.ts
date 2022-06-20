@@ -24,7 +24,7 @@ import { User } from '../../../entities/User.entity';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { ExpenseService } from './expense.service';
 import { Request } from 'express';
-import { ParseOrderByPipeClients } from './expense.pipes';
+import { ParseOrderByPipeExpenses, ParseOrderPipeExpenses } from './expense.pipes';
 import { PageResponse } from 'src/constants/PageResponse';
 import { DeleteResult } from 'typeorm';
 
@@ -55,8 +55,8 @@ export class ExpenseController {
     @Query('page') page: number,
     @Query('pageSize') pageSize: number,
     @Query('q') searchCriteria: string,
-    @Query('order', ParseOrderByPipeClients) order: 'ASC' | 'DESC',
-    @Query('orderBy', ParseOrderByPipeClients) orderBy: string
+    @Query('order', ParseOrderPipeExpenses) order: 'ASC' | 'DESC',
+    @Query('orderBy', ParseOrderByPipeExpenses) orderBy: string
   ): Promise<PageResponse<Expense>>{
     return this.expenseService.findExpense(
       (user as any).company.id,

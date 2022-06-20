@@ -47,16 +47,16 @@ export class ExpenseDAO {
         orderBy: string
       ): Promise<PageResponse<Expense>> {
           const query = this.repository
-          .createQueryBuilder('expense')
-          .where('expense.companyId = :companyId', {companyId});
+            .createQueryBuilder('expense')
+            .where('expense.companyId = :companyId', {companyId});
           if (searchCriteria) {
               query.andWhere(
                   new Brackets(qb => {
-                      qb.where('expense.name ILIKE :searchCriteria', {
+                      qb.where('expense.description ILIKE :searchCriteria', {
                           searchCriteria: `%${searchCriteria}%`,
                       });
 
-                      ['description','cost','frecuency'].forEach(column => {
+                      ['cost','frecuency'].forEach(column => {
                           qb.orWhere(`expense.${column} ILIKE :searchCriteria`, {
                               searchCriteria: `%${searchCriteria}%`,
                           });

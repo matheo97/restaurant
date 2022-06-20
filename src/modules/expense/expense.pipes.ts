@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable, PipeTransform } from '@nestjs/common';
 
 @Injectable()
-export class ParseOrderPipeClients implements PipeTransform {
+export class ParseOrderPipeExpenses implements PipeTransform {
   transform(value: string): string | null {
     if (!value) {
       return null;
@@ -18,7 +18,7 @@ export class ParseOrderPipeClients implements PipeTransform {
 }
 
 @Injectable()
-export class ParseOrderByPipeClients implements PipeTransform {
+export class ParseOrderByPipeExpenses implements PipeTransform {
   transform(value: string): string | null {
     const orderByExpenses = [
       'description',
