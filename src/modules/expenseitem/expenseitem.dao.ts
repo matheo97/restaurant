@@ -14,8 +14,8 @@ export class ExpenseItemDAO {
 
     async getExpenseInfoById(id: string): Promise<ExpenseItem>{
         const query = this.repository
-        .createQueryBuilder('expense')
-        .where('expense.id = :id', {id});
+        .createQueryBuilder('expenseitem')
+        .where('expenseitem.id = :id', {id});
 
         return query.getOne();
     }
@@ -33,8 +33,8 @@ export class ExpenseItemDAO {
         .execute();
     }
 
-    async find(
-        id: string,
+    async findExpenseItem(
+        expenseId: string,
         page = DEFAULT_PAGE_NO,
         pageSize = DEFAULT_PAGE_SIZE,
         searchCriteria: string,
@@ -43,17 +43,16 @@ export class ExpenseItemDAO {
       ): Promise<PageResponse<ExpenseItem>> {
           const query = this.repository
           .createQueryBuilder('expenseitem')
-          .where('expenseitem.id = :id', {id});
+          .where('expenseitem.expenseId   = :expenseId', {expenseId});
 
           if (searchCriteria) {
               query.andWhere(
                   new Brackets(qb => {
-                      qb.where('expenseitem.name ILIKE :searchCriteria', {
+                      qb.where('expenseitem.description ILIKE :searchCriteria', {
                           searchCriteria: `%${searchCriteria}%`,
                       });
 
-                      ['description',
-                      'cost'].forEach(column => {
+                      ['cost'].forEach(column => {
                           qb.orWhere(`expenseitem.${column} ILIKE :searchCriteria`, {
                               searchCriteria: `%${searchCriteria}%`,
                           });
@@ -62,14 +61,14 @@ export class ExpenseItemDAO {
               );
           }
 
-          const [expenses, total] = await query
+          const [expenseItems, total] = await query
           .orderBy(`expenseitem.${orderBy}`,order)
           .skip(pageSize && page ? pageSize * (page -1) : 0)
           .take(pageSize || 0)
           .getManyAndCount();
 
           return {
-              results : expenses,
+              results : expenseItems,
               total,
           };
       } 

@@ -8,7 +8,6 @@ import { ExpenseDAO } from "./expense.dao";
 @Injectable()
 export class ExpenseService{
     constructor(
-        @InjectRepository(Expense)
         private readonly expenseDao: ExpenseDAO){}
 
     async createExpense(expense: Expense, companyId: string): Promise<Expense>{
@@ -24,7 +23,7 @@ export class ExpenseService{
     }
     
     async getExpenseInfoById(id: string, companyId?: string): Promise<Expense>{
-        return this.expenseDao.getExpenseInfoById(id,companyId);
+        return this.expenseDao.getExpenseById(id,companyId);
     }
 
     async deleteExpense(id: string, companyId?: string): Promise<DeleteResult>{
@@ -39,7 +38,7 @@ export class ExpenseService{
         order: 'ASC' | 'DESC',
         orderBy: string
     ): Promise<PageResponse<Expense>> {
-        return this.expenseDao.find(
+        return this.expenseDao.findExpenseInfo(
             companyId,
             page,
             pageSize,

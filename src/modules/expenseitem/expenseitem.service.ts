@@ -1,5 +1,4 @@
 import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
 import { ExpenseItem } from "../../../entities/ExpenseItem.entity";
 import { PageResponse } from "src/constants/PageResponse";
 import { DeleteResult } from "typeorm";
@@ -8,7 +7,6 @@ import { ExpenseItemDAO } from "./expenseitem.dao";
 @Injectable()
 export class ExpenseItemService{
     constructor(
-        @InjectRepository(ExpenseItem)
         private readonly expenseItemDao: ExpenseItemDAO){}
 
     async createExpense(expenseItem: ExpenseItem): Promise<ExpenseItem>{
@@ -32,15 +30,15 @@ export class ExpenseItemService{
     }
 
     async findExpense(
-        companyId: string,
+        expenseId: string,
         page: number,
         pageSize: number,
         searchCriteria: string,
         order: 'ASC' | 'DESC',
         orderBy: string
     ): Promise<PageResponse<ExpenseItem>> {
-        return this.expenseItemDao.find(
-            companyId,
+        return this.expenseItemDao.findExpenseItem(
+            expenseId,
             page,
             pageSize,
             searchCriteria,

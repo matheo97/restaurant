@@ -23,7 +23,7 @@ import { ExpenseItem } from "../../../entities/ExpenseItem.entity";
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { ExpenseItemService } from './expenseitem.service';
 import { Request } from 'express';
-import { ParseOrderByPipeClients } from './expenseitem.pipes';
+import { ParseOrderByPipeClients, ParseOrderPipeClients } from './expenseitem.pipes';
 import { PageResponse } from 'src/constants/PageResponse';
 import { DeleteResult } from 'typeorm';
 
@@ -37,8 +37,8 @@ export class ExpenseItemController {
   constructor(private readonly expenseItemService: ExpenseItemService){}
 
   @Get('/:expenseitemId')
-  @ApiOperation({summary: 'Retrieve details about an existing Expense'})
-  @ApiOkResponse({description: 'All info of an expense', type: ExpenseItem})
+  @ApiOperation({summary: 'Retrieve details about an existing Expense Item'})
+  @ApiOkResponse({description: 'All info of an expense item', type: ExpenseItem})
   async getExpenseInfoById(
     @Param('expenseitemId', ParseUUIDPipe) expenseitemId: string,
   ): Promise<ExpenseItem>{
@@ -53,7 +53,7 @@ export class ExpenseItemController {
     @Query('page') page: number,
     @Query('pageSize') pageSize: number,
     @Query('q') searchCriteria: string,
-    @Query('order', ParseOrderByPipeClients) order: 'ASC' | 'DESC',
+    @Query('order', ParseOrderPipeClients) order: 'ASC' | 'DESC',
     @Query('orderBy', ParseOrderByPipeClients) orderBy: string
   ): Promise<PageResponse<ExpenseItem>>{
     return this.expenseItemService.findExpense(

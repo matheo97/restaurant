@@ -10,71 +10,68 @@ export class ExpenseDAO {
     constructor(
         @InjectRepository(Expense)
         private readonly repository: Repository<Expense>
-    ){}
+    ) { }
 
-    async getExpenseInfoById(id: string, companyId?: string): Promise<Expense>{
-        const query = this.repository
-        .createQueryBuilder('expense')
-        .leftJoinAndSelect('expense.company', 'company')
-        .where('expense.id = :id', {id});
+    async getExpenseById(id: string, companyId?: string): Promise<Expense> {
+        const query = this.repository.createQueryBuilder('expense').leftJoinAndSelect('expense.company', 'company').where('expense.id = :id', { id });
 
-        if (companyId){
-            query.andWhere('expense.companyId = :companyId', {companyId});
+        if (companyId) {
+            query.andWhere('expense.companyId = :companyId', { companyId });
         }
         return query.getOne();
     }
 
     async save(expense: Expense): Promise<Expense> {
-        return this. repository.save(expense);
+        return this.repository.save(expense);
     }
 
-    async delete(id: string, companyId: string): Promise<DeleteResult>{
+    async delete(id: string, companyId: string): Promise<DeleteResult> {
         return this.repository
-        .createQueryBuilder()
-        .delete()
-        .from(Expense)
-        .where('id = :id', { id })
-        .andWhere('companyId = :companyId', {companyId})
-        .execute();
+            .createQueryBuilder()
+            .delete()
+            .from(Expense)
+            .where('id = :id', { id })
+            .andWhere('companyId = :companyId', { companyId })
+            .execute();
     }
 
-    async find(
+    async findExpenseInfo(
         companyId: string,
         page = DEFAULT_PAGE_NO,
         pageSize = DEFAULT_PAGE_SIZE,
         searchCriteria: string,
         order: 'ASC' | 'DESC',
         orderBy: string
-      ): Promise<PageResponse<Expense>> {
-          const query = this.repository
+    ): Promise<PageResponse<Expense>> {
+        const query = this.repository
             .createQueryBuilder('expense')
-            .where('expense.companyId = :companyId', {companyId});
-          if (searchCriteria) {
-              query.andWhere(
-                  new Brackets(qb => {
-                      qb.where('expense.description ILIKE :searchCriteria', {
-                          searchCriteria: `%${searchCriteria}%`,
-                      });
+            .where('expense.companyId = :companyId', { companyId });
+        if (searchCriteria) {
+            query.andWhere(
+                new Brackets(qb => {
+                    qb.where('expense.description ILIKE :searchCriteria', {
+                        searchCriteria: `%${searchCriteria}%`,
+                    });
 
-                      ['cost','frecuency'].forEach(column => {
-                          qb.orWhere(`expense.${column} ILIKE :searchCriteria`, {
-                              searchCriteria: `%${searchCriteria}%`,
-                          });
-                      });
-                  })
-              );
-          }
+                    ['cost', 'frecuency'].forEach(column => {
+                        qb.orWhere(`expense.${column} ILIKE :searchCriteria`, {
+                            searchCriteria: `%${searchCriteria}%`,
+                        });
+                    });
+                })
+            );
+        }
 
-          const [expenses, total] = await query
-          .orderBy(`expense.${orderBy}`,order)
-          .skip(pageSize && page ? pageSize * (page -1) : 0)
-          .take(pageSize || 0)
-          .getManyAndCount();
+        const [expenses, total] = await query
+            .orderBy(`expense.${orderBy}`, order)
+            .skip(pageSize && page ? pageSize * (page - 1) : 0)
+            .take(pageSize || 0)
+            .getManyAndCount();
 
-          return {
-              results : expenses,
-              total,
-          };
-      } 
-    
+        return {
+            results: expenses,
+            total,
+        };
+    }
+
 }

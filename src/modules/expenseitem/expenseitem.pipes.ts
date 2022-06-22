@@ -23,6 +23,7 @@ export class ParseOrderByPipeClients implements PipeTransform {
     const orderByExpenses = [
       'description',
       'cost',
+      'expenseId',
       'createdAt',
       'updatedAt',
     ];

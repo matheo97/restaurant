@@ -22,6 +22,11 @@ export class ExpenseItem extends Auditable{
     @Length(0, 255)
     @ApiPropertyOptional({description:'ExpenseItem Cost', maxLength: 255})
     cost?: string;
+
+    @Column({ name: 'expense_id' })
+    @IsOptional()
+    @ApiPropertyOptional({ description: 'Company Id' })
+    expenseId?: string;
   
     @ManyToOne(() => Expense)
     @JoinColumn({ name: 'id' })

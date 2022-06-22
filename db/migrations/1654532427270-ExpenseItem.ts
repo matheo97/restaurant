@@ -12,6 +12,8 @@ export class ExpenseItem1654532427270 implements MigrationInterface {
                   name: 'id',
                   type: 'uuid',
                   isPrimary: true,
+                  isGenerated: true,
+                  generationStrategy: 'uuid',
                 },
                 {
                   name: 'description',
@@ -24,6 +26,11 @@ export class ExpenseItem1654532427270 implements MigrationInterface {
                   type: 'varchar',
                   length: '255',
                   isNullable: true,
+                },
+                {
+                  name: 'expense_id',
+                  type: 'uuid',
+                  isNullable: false,
                 },
                 {
                   name: 'created_at',
@@ -41,7 +48,7 @@ export class ExpenseItem1654532427270 implements MigrationInterface {
               foreignKeys: [
                 {
                   name: 'expense_expenseitem_key',
-                  columnNames: ['id'],
+                  columnNames: ['expense_id'],
                   referencedTableName: 'expense',
                   referencedColumnNames: ['id'],
                 },
