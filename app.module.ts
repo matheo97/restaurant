@@ -5,7 +5,9 @@ import {
   AuthModule,
   UserModule,
   ItemModule,
+  ExpenseModule,
   OrderModule,
+  ExpenseItemModule,
   TransactionModule,
 } from './src/modules';
 import { ConfigModule } from '@nestjs/config';
@@ -18,7 +20,9 @@ import { ConfigModule } from '@nestjs/config';
     AuthModule,
     UserModule,
     ItemModule,
+    ExpenseModule,
     OrderModule,
+    ExpenseItemModule,
     TransactionModule,
   ],
   controllers: [],
