@@ -30,7 +30,7 @@ export class ExpenseItemService{
     }
 
     async findExpense(
-        expenseId: string,
+        companyId: string,
         page: number,
         pageSize: number,
         searchCriteria: string,
@@ -38,7 +38,7 @@ export class ExpenseItemService{
         orderBy: string
     ): Promise<PageResponse<ExpenseItem>> {
         return this.expenseItemDao.findExpenseItem(
-            expenseId,
+            companyId,
             page,
             pageSize,
             searchCriteria,

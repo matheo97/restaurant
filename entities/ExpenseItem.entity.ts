@@ -25,11 +25,11 @@ export class ExpenseItem extends Auditable{
 
     @Column({ name: 'expense_id' })
     @IsOptional()
-    @ApiPropertyOptional({ description: 'Company Id' })
+    @ApiPropertyOptional({ description: 'Expense Id' })
     expenseId?: string;
   
     @ManyToOne(() => Expense)
-    @JoinColumn({ name: 'id' })
+    @JoinColumn({ name: 'expense_id' })
     @ApiHideProperty()
     expense?: Expense;
 

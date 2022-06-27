@@ -34,7 +34,7 @@ export class ExpenseItemDAO {
     }
 
     async findExpenseItem(
-        expenseId: string,
+        companyId: string,
         page = DEFAULT_PAGE_NO,
         pageSize = DEFAULT_PAGE_SIZE,
         searchCriteria: string,
@@ -43,7 +43,8 @@ export class ExpenseItemDAO {
       ): Promise<PageResponse<ExpenseItem>> {
           const query = this.repository
           .createQueryBuilder('expenseitem')
-          .where('expenseitem.expenseId   = :expenseId', {expenseId});
+          .leftJoinAndSelect('expenseitem.expense','expense')
+          .where('expense.companyId = :companyId', {companyId});
 
           if (searchCriteria) {
               query.andWhere(
